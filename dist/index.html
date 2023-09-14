@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase</title>
+</head>
+<body>
+    <h1 id="hello"><span>Hello</span></h1>
+    <h1>Firebase 9</h1>
+
+    <form class="add">
+        <fieldset>
+            <legend>Add User</legend>
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <button>Add new user</button>
+        </fieldset>
+    </form>
+
+
+    <form class="delete">
+        <fieldset>
+            <legend>Delete User</legend>
+            <div>
+                <label>Document id:</label>
+                <input type="text" name="id" required>
+            </div>
+            
+            <button>Delete a user</button>
+        </fieldset>
+    </form>
+
+
+    <form class="update">
+        <fieldset>
+            <legend>Update User</legend>
+            <div>
+                <label>Document id:</label>
+                <select name="id" id="ids" required></select>
+            </div>
+            
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <button>Update a user</button>
+        </fieldset>
+    </form>
+
+    <h1>Firebase Auth</h1>
+
+    <form class="signup">
+        <fieldset>
+            <legend>Sign Up</legend>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <button>Sign Up</button>
+        </fieldset>
+    </form>
+
+
+    <button class="logout">Loge out</button>
+
+
+    <form class="login">
+        <fieldset>
+            <legend>Login</legend>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <button>Loge in</button>
+        </fieldset>
+    </form>
+
+
+
+
+    <script src="./bundle.js"></script>
+    
+</body>
+</html>
