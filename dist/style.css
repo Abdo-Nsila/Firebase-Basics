@@ -1,0 +1,52 @@
+
+form fieldset{
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+label{
+    display: inline-block;
+    /* background-color: chocolate; */
+    width: 150px;
+}
+
+
+input,#ids{
+    width: 250px;
+    height: 25px;
+    background: #e4e6ff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-indent: 10px;
+    letter-spacing: 2px;
+}
+
+#ids{
+    width: 258px;
+    cursor: pointer;
+}
+
+button{
+    font-size: 15px;
+    font-weight: 600;
+    height: 30px;
+    width: 56%;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}
+
+.pos{
+    background-color: green;
+}
+.upd{
+    background-color: gold;
+}
+.neg{
+    background-color: red;
+}

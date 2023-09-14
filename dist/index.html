@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Firebase</title>
 </head>
 <body>
@@ -25,7 +26,7 @@
                 <input type="password" name="password" required>
             </div>
             
-            <button>Add new user</button>
+            <button class="pos">Add new user</button>
         </fieldset>
     </form>
 
@@ -38,7 +39,7 @@
                 <input type="text" name="id" required>
             </div>
             
-            <button>Delete a user</button>
+            <button class="neg">Delete a user</button>
         </fieldset>
     </form>
 
@@ -64,7 +65,7 @@
                 <input type="password" name="password" required>
             </div>
             
-            <button>Update a user</button>
+            <button class="upd">Update a user</button>
         </fieldset>
     </form>
 
@@ -82,12 +83,15 @@
                 <input type="password" name="password" required>
             </div>
             
-            <button>Sign Up</button>
+            <button class="upd">Sign Up</button>
         </fieldset>
     </form>
 
 
-    <button class="logout">Loge out</button>
+    <fieldset>
+        <label>Logout:</label><br>
+        <button class="logout neg">Loge out</button>
+    </fieldset>
 
 
     <form class="login">
@@ -102,7 +106,7 @@
                 <input type="password" name="password" required>
             </div>
             
-            <button>Loge in</button>
+            <button class="pos">Loge in</button>
         </fieldset>
     </form>
 
