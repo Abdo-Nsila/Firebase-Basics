@@ -1,23 +1,38 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-form fieldset{
-    padding: 20px 10px;
+h1{
+    text-align: center;
+}
+
+form fieldset, fieldset{
+    background-color: rgb(241, 241, 255);
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 20px 10px;
+    margin: 50px 0;
+    border: none;
+    border-radius: 10px;
+}
+
+legend{
+    font-size: 18px;
+    font-weight: 600;
 }
 
 
 label{
     display: inline-block;
-    /* background-color: chocolate; */
     width: 150px;
 }
 
 
 input,#ids{
     width: 250px;
-    height: 25px;
-    background: #e4e6ff;
+    height: 30px;
+    background: #dcdeff;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -34,7 +49,7 @@ button{
     font-size: 15px;
     font-weight: 600;
     height: 30px;
-    width: 56%;
+    width: 410px;
     border: none;
     cursor: pointer;
     color: white;
@@ -49,4 +64,11 @@ button{
 }
 .neg{
     background-color: red;
+}
+
+
+@media screen and (min-width: 700px) {
+    form fieldset, fieldset{
+        width: 50%;
+    }
 }
