@@ -7,21 +7,17 @@
     <title>Firebase</title>
   </head>
   <body class="light">
-    <h1 id="hello"><span>Hello Admin</span></h1>
+    <h1 id="hello"><span>Hello</span></h1>
     <h1>Firebase 9</h1>
 
     <label class="switch">
-      <input type="checkbox" id="switch" checked/>
+      <input type="checkbox" id="switch" />
       <span class="slider round"></span>
     </label>
 
-
-    <h1>Firebase Auth</h1>
-
-    <!--! Sign-up && Add user -->
-    <form class="signup">
+    <form class="add">
       <fieldset>
-        <legend>Sign Up</legend>
+        <legend>Add User</legend>
         <div>
           <label>Username:</label>
           <input class="inputs" type="text" name="username" required />
@@ -35,42 +31,72 @@
           <input class="inputs" type="password" name="password" required />
         </div>
 
+        <button class="pos">Add new user</button>
+      </fieldset>
+    </form>
+
+    <form class="delete">
+      <fieldset>
+        <legend>Delete User</legend>
+        <div>
+          <label>Document id:</label>
+          <input class="inputs" type="text" name="id" required />
+        </div>
+
+        <button class="neg">Delete a user</button>
+      </fieldset>
+    </form>
+
+    <form class="update">
+      <fieldset>
+        <legend>Update User</legend>
+        <div>
+          <label>Document id:</label>
+          <select name="id" id="ids" class="inputs" required></select>
+        </div>
+
+        <div>
+          <label>Username:</label>
+          <input class="inputs" type="text" name="username" required />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input class="inputs" type="email" name="email" required />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input class="inputs" type="password" name="password" required />
+        </div>
+
+        <button class="upd">Update a user</button>
+      </fieldset>
+    </form>
+
+    <h1>Firebase Auth</h1>
+
+    <form class="signup">
+      <fieldset>
+        <legend>Sign Up</legend>
+        <div>
+          <label>Email:</label>
+          <input class="inputs" type="email" name="email" required />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input class="inputs" type="password" name="password" required />
+        </div>
+
         <button class="upd">Sign Up</button>
       </fieldset>
     </form>
 
-    <form class="post">
-      <fieldset>
-      <legend>Add post</legend>
-        <div>
-          <label>title:</label>
-          <input class="inputs" type="text" name="title" required />
-        </div>
-        <div>
-          <label>Photo:</label>
-          <input class="inputs" id="src" type="file" name="img_url" required />
-        </div>
-        <button class="upd">Post</button>
-      </fieldset>
-    </form>
-    <form class="delete_post">
-      <fieldset>
-      <legend>Delete post</legend>
-        <button class="neg">Delete Post</button>
-      </fieldset>
-    </form>
-
-
-    <!--! Logout -->
-    <form class="logout">
+    <form>
       <fieldset>
         <legend>Logout</legend>
         <button class="logout neg">Loge out</button>
       </fieldset>
     </form>
 
-
-    <!--! Login -->
     <form class="login">
       <fieldset>
         <legend>Login</legend>
@@ -87,25 +113,17 @@
       </fieldset>
     </form>
 
-
-    <h1>Firestore Subcollection</h1>
-    <ul id="listCol"></ul>
-
-
     <script>
       const body = document.querySelector("body");
       const switchMode = document.querySelector("#switch");
       const fieldsets = [...document.querySelectorAll("fieldset")];
       const inputs = [...document.querySelectorAll(".inputs")];
 
-      // switchMode.addEventListener("click", () => {
-      //  ...
-      // });
-      if(switchMode.checked){
+      switchMode.addEventListener("click", () => {
         body.classList.toggle("dark");
         fieldsets.map((e) => e.classList.toggle("dark-form"));
         inputs.map((e) => e.classList.toggle("dark-input"));
-      }
+      });
     </script>
     <script src="./bundle.js"></script>
   </body>
