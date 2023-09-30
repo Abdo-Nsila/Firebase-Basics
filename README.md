@@ -3,5 +3,6 @@ You find in this project the connection ``functions`` with the database in Fireb
 Also authentication and ``sign-in``, ``sign-up`` ``login``, ``logout``
 
 ## Features :
-CreateDoc, DeleteDoc, UploadFile, DeleteFile
-RelationShip between collections
+* ``CreateDoc``, ``DeleteDoc``, ``UploadFile``, ``DeleteFile``
+* 
+* RelationShip between collections
