@@ -3,4 +3,4 @@ You find in this project the connection ``functions`` with the database in Fireb
 Also authentication and ``sign-in``, ``sign-up`` ``login``, ``logout``
 
 ## Features :
-RelationShip
+RelationShip between collections
