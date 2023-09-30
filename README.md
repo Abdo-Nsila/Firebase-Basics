@@ -4,5 +4,7 @@ Also authentication and ``sign-in``, ``sign-up`` ``login``, ``logout``
 
 ## Features :
 * ``CreateDoc``, ``DeleteDoc``, ``UploadFile``, ``DeleteFile``
-* 
+
 * RelationShip between collections
+
+* Create project
