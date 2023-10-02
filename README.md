@@ -11,4 +11,4 @@ Also authentication and ``sign-in``, ``sign-up`` ``login``, ``logout``
 
 * Create project
 
-* Handle
+* Handle User Auth
