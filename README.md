@@ -5,8 +5,10 @@ Also authentication and ``sign-in``, ``sign-up`` ``login``, ``logout``
 ## Features :
 * ``CreateDoc``, ``DeleteDoc``, ``UploadFile``, ``DeleteFile``
 
-* ``Working with localStorage``
+* ``Working with localStorage & Cookies``
 
 * RelationShip between collections
 
 * Create project
+
+* 
