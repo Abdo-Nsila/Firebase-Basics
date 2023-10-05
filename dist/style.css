@@ -180,8 +180,24 @@ button{
     background-color: red;
 }
 
+.profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-@media screen and (min-width: 700px) {
+
+@media screen and (min-width: 0px) {
+    form{
+        width: 100%;
+    }
+    form fieldset, fieldset{
+        width: 100%;
+        align-items: center;
+    }
+}
+@media screen and (min-width: 950px) {
     form{
         width: 50%;
     }
@@ -190,12 +206,6 @@ button{
         align-items: center;
     }
 }
-@media screen and (max-width: 700px) {
-    form{
-        width: 90%;
-    }
-    form fieldset, fieldset{
-        width: 100%;
-        align-items: center;
-    }
-}
+
+
+

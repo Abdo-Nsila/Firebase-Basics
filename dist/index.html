@@ -11,14 +11,16 @@
     <h1>Firebase 9</h1>
 
     <label class="switch">
-      <input type="checkbox" id="switch" checked/>
+      <input type="checkbox" id="switch" checked />
       <span class="slider round"></span>
     </label>
 
-
     <h1>Firebase Auth</h1>
 
-    <!--! Sign-up && Add user -->
+    <!--! Display User -->
+    <div class="profile"></div>
+
+    <!--! Sign-up && Add user && Get user -->
     <form class="signup">
       <fieldset>
         <legend>Sign Up</legend>
@@ -34,14 +36,49 @@
           <label>Password:</label>
           <input class="inputs" type="password" name="password" required />
         </div>
+        <div>
+          <label>Avatar:</label>
+          <input class="inputs" type="file" name="avatar" required />
+        </div>
 
         <button class="upd">Sign Up</button>
       </fieldset>
     </form>
 
+    <form class="uplImg">
+      <fieldset>
+        <legend>Upload Image</legend>
+        <input class="inputs" type="file" name="img" />
+
+        <button class="pos">Upload Image</button>
+      </fieldset>
+    </form>
+
+    <form class="getUser">
+      <fieldset>
+        <legend>Get post</legend>
+        <button class="pos">Get user</button>
+      </fieldset>
+    </form>
+
+    <!--! Delete user -->
+    <form class="deleteUser">
+      <fieldset>
+        <legend>Delete User</legend>
+        <input
+          class="inputs"
+          type="text"
+          name="username"
+          placeholder="Enter Username of user..."
+        />
+        <button class="neg">Delete user</button>
+      </fieldset>
+    </form>
+
+    <!--! Add Remove Post -->
     <form class="post">
       <fieldset>
-      <legend>Add post</legend>
+        <legend>Add post</legend>
         <div>
           <label>title:</label>
           <input class="inputs" type="text" name="title" required />
@@ -55,11 +92,10 @@
     </form>
     <form class="delete_post">
       <fieldset>
-      <legend>Delete post</legend>
+        <legend>Delete post</legend>
         <button class="neg">Delete Post</button>
       </fieldset>
     </form>
-
 
     <!--! Logout -->
     <form class="logout">
@@ -68,7 +104,6 @@
         <button class="logout neg">Loge out</button>
       </fieldset>
     </form>
-
 
     <!--! Login -->
     <form class="login">
@@ -87,12 +122,24 @@
       </fieldset>
     </form>
 
-
     <h1>Firestore Subcollection</h1>
     <ul id="listCol"></ul>
 
-
     <script>
+      // if user is login or not
+      const profileDiv = document.querySelector(".profile");
+      let userData = localStorage.getItem("userData");
+      if (userData !== null) {
+        userData = JSON.parse(userData);
+        profileDiv.innerHTML = `
+          <img src="${userData.avatar.url}" alt"${userData.avatar.name}" width="100px"/>
+          <h3>${userData.username}</h3>
+          <h4>${userData.email}</h4>
+          `;
+      } else {
+        console.log(false);
+      }
+
       const body = document.querySelector("body");
       const switchMode = document.querySelector("#switch");
       const fieldsets = [...document.querySelectorAll("fieldset")];
@@ -101,7 +148,7 @@
       // switchMode.addEventListener("click", () => {
       //  ...
       // });
-      if(switchMode.checked){
+      if (switchMode.checked) {
         body.classList.toggle("dark");
         fieldsets.map((e) => e.classList.toggle("dark-form"));
         inputs.map((e) => e.classList.toggle("dark-input"));

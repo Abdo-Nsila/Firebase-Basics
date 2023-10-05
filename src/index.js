@@ -9,6 +9,8 @@ import {
   onSnapshot,
   doc,
   setDoc,
+  get,
+  getDoc,
   getDocs,
   updateDoc,
   deleteDoc,
@@ -18,12 +20,22 @@ import {
   limit,
   getCountFromServer,
 } from "firebase/firestore";
+
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signOut,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  deleteUser,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -45,6 +57,9 @@ const auth = getAuth();
 // collection ref
 const colRef = collection(db, "users");
 
+// Create a root reference
+const storage = getStorage();
+
 //* real time collection data
 // onSnapshot(colRef, (snapshot) => {
 
@@ -57,57 +72,119 @@ const colRef = collection(db, "users");
 //     console.log(users)
 // })
 
+const userData = () => {
+  return JSON.parse(localStorage.getItem("userData"));
+};
+
 //! Adding document post
 const postForm = document.querySelector(".post");
-postForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
+postForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
   const customId = crypto.randomUUID();
-  await setDoc(doc(db, "posts", `${customId}`), {
-    title: postForm.title.value,
-    img_url: postForm.img_url.files[0].name,
-    likes: "0",
-    createdAt: serverTimestamp(),
-  }).then(() => {
-    postForm.reset();
-  });
-  // ADD post ID into array user 
-  await updateDoc(doc(db, "users", "KAMADO"), {
+  uploadPostInfo(postForm.img_url.files[0], customId);
+  // ADD post ID into array user
+  await updateDoc(doc(db, "users", `${userData().username}`), {
     post_ids: arrayUnion(customId),
   });
 });
+//! Add image in storage
+// const imgForm = document.querySelector('.uplImg')
+const uploadPostInfo = (img, customId) => {
+  const imgName = img.name;
+  const imgType = img.type;
+  const metaData = { contentType: imgType };
+  const storage = getStorage();
+  const storageRef = ref(storage, `Post_Images/${imgName}`);
+  const uploadTask = uploadBytesResumable(storageRef, img, metaData);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`Upload: ${progress}%`);
+    },
+    (error) => {
+      alert("Error: image not upload");
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setDoc(doc(db, "posts", customId), {
+          sender: userData().username,
+          title: postForm.title.value,
+          likes: 0,
+          createdAt: serverTimestamp(),
+          img: {
+            path: `Post_Images/${imgName}`,
+            url: downloadURL,
+            name: imgName,
+            type: imgType,
+          },
+        }).then(() => {
+          postForm.reset();
+        });
+      });
+    }
+  );
+};
 
 //! Delete document post
 const delete_postForm = document.querySelector(".delete_post");
-delete_postForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
+delete_postForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
   await deleteDoc(doc(db, "posts", "id1"));
-  await updateDoc(doc(db, "users", "KAMADO"), {
+  // Delete post ID into array user
+  await updateDoc(doc(db, "users", `${userData().username}`), {
     post_ids: arrayRemove("id1"),
   });
-  alert("Deleted")
+  alert("Post Deleted");
 });
-
-
-
-
-
-
-
 
 //! Adding document user
 const signupForm = document.querySelector(".signup");
-const addUser = async () => {
-  await setDoc(doc(db, "users", `${signupForm.username.value}`), {
-    username: signupForm.username.value,
-    email: signupForm.email.value,
-    password: signupForm.password.value,
-    createdAt: serverTimestamp(),
-  }).then(() => {
-    signupForm.reset();
-  });
+const addUser = () => {
+  const img = signupForm.avatar.files[0];
+  const imgName = img.name;
+  const imgType = img.type;
+  const metaData = { contentType: imgType };
+  const storage = getStorage();
+  const storageRef = ref(storage, `Avatars_Images/${imgName}`);
+  const uploadTask = uploadBytesResumable(storageRef, img, metaData);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`Upload: ${progress}%`);
+    },
+    (error) => {
+      alert("Error: image not upload");
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+        const userData = {
+          username: signupForm.username.value,
+          email: signupForm.email.value,
+          password: signupForm.password.value,
+          avatar: {
+            path: `Avatars_Images/${imgName}`,
+            url: downloadURL,
+            name: imgName,
+            type: imgType,
+          },
+          post_ids: {},
+          type: "user",
+          createdAt: serverTimestamp(),
+        };
+        await setDoc(
+          doc(db, "users", `${signupForm.username.value}`),
+          userData
+        );
+        localStorage.setItem("userData", JSON.stringify(userData));
+        signupForm.reset();
+        location.reload()
+      });
+    }
+  );
 };
-
 //! Sign up user
 signupForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -119,15 +196,60 @@ signupForm.addEventListener("submit", (e) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((cred) => {
       //* Add user
-      addUser();
       console.log("user created: ", cred.user);
-      signupForm.reset();
+      addUser();
     })
     .catch((err) => {
       console.log(err.message);
     });
 });
 
+//! Delete Account
+const delete_userForm = document.querySelector(".deleteUser");
+delete_userForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  //! Delete avatar firstly before nonAuth
+  const desertRef = ref(storage, userData().avatar.path);
+  // Delete the file
+  await deleteObject(desertRef)
+    .then(() => {
+      console.log("File deleted successfully");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+  // Current signed-in user to delete
+  deleteUser(user)
+    .then(async () => {
+      console.log("Account deleted successfully");
+      await deleteDoc(doc(db, "users", `${userData().username}`))
+        .then(() => {
+          localStorage.clear()
+          console.log("User deleted successfully");
+          location.reload()
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      // An error occurred
+      // ...
+    });
+});
+
+//! Get document user
+const getUser = async (email) => {
+  const q = query(collection(db, "users"), where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    localStorage.setItem("userData", JSON.stringify(doc.data()));
+  });
+};
 //! Sign-in == login user
 const loginForm = document.querySelector(".login");
 
@@ -140,8 +262,10 @@ loginForm.addEventListener("submit", (e) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      getUser(email);
+      userData();
       console.log(user);
-      alert("Login success");
+      location.reload()
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -156,7 +280,9 @@ logoutForm.addEventListener("submit", (e) => {
   e.preventDefault();
   signOut(auth)
     .then(() => {
+      localStorage.clear();
       console.log("Sign-out successful.");
+      location.reload()
     })
     .catch((error) => {
       console.log(error);
